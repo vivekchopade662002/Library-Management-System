@@ -1,0 +1,18 @@
+package com.library.servlet;
+
+import java.io.*;
+
+import jakarta.servlet.http.HttpServlet;
+
+public class LogoutServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Invalidate the session to log the user out
+        HttpSession session = request.getSession(false);  // Don't create a new session if it doesn't exist
+        if (session != null) {
+            session.invalidate();  // Invalidates the session, effectively logging the user out
+        }
+        
+        // Redirect to the login page after logout
+        response.sendRedirect("login.jsp");
+    }
+}

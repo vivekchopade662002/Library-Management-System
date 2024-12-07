@@ -1,0 +1,76 @@
+package com.library.servlet;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import com.library.db.DBConnection;
+
+@WebServlet("/DeleteBookServlet")
+public class DeleteBookServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        String bookId = request.getParameter("bookId");
+        String bookName = request.getParameter("bookName");
+        
+        try (Connection conn = DBConnection.getConnection()) {
+            boolean deleted = false;
+            
+            // If book ID is provided
+            if (bookId != null && !bookId.trim().isEmpty()) {
+                String sql = "DELETE FROM books WHERE id = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setInt(1, Integer.parseInt(bookId));
+                    int rowsAffected = stmt.executeUpdate();
+                    deleted = rowsAffected > 0;
+                }
+            }
+            // If book name is provided
+            else if (bookName != null && !bookName.trim().isEmpty()) {
+                // First check if the book exists
+                String checkSql = "SELECT id FROM books WHERE name = ?";
+                try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+                    checkStmt.setString(1, bookName);
+                    ResultSet rs = checkStmt.executeQuery();
+                    
+                    if (rs.next()) {
+                        // Book exists, now delete it
+                        String deleteSql = "DELETE FROM books WHERE name = ?";
+                        try (PreparedStatement deleteStmt = conn.prepareStatement(deleteSql)) {
+                            deleteStmt.setString(1, bookName);
+                            int rowsAffected = deleteStmt.executeUpdate();
+                            deleted = rowsAffected > 0;
+                        }
+                    }
+                }
+            }
+            
+            // Set appropriate message
+            if (deleted) {
+                request.setAttribute("message", "Book deleted successfully!");
+                request.setAttribute("messageClass", "success");
+            } else {
+                request.setAttribute("message", "Book not found or could not be deleted.");
+                request.setAttribute("messageClass", "error");
+            }
+            
+        } catch (NumberFormatException e) {
+            request.setAttribute("message", "Invalid book ID format.");
+            request.setAttribute("messageClass", "error");
+        } catch (Exception e) {
+            request.setAttribute("message", "Error: " + e.getMessage());
+            request.setAttribute("messageClass", "error");
+        }
+        
+        // Forward back to delete.jsp
+        request.getRequestDispatcher("delete.jsp").forward(request, response);
+    }
+}

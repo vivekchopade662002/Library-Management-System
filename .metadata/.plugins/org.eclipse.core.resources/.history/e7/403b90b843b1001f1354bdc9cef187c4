@@ -1,0 +1,48 @@
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+@WebServlet("/SignUpServlet")
+public class SignUpServlet extends HttpServlet {
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/library_db";
+    private static final String DB_USERNAME = "root";
+    private static final String DB_PASSWORD = "password";
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String message;
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD)) {
+            String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, username);
+                statement.setString(2, password);
+                statement.setString(3, email);
+                int rowsInserted = statement.executeUpdate();
+
+                if (rowsInserted > 0) {
+                    message = "Sign up successful! You can now log in.";
+                } else {
+                    message = "Sign up failed. Please try again.";
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            message = "Error: Unable to process your request. Please try again later.";
+        }
+
+        request.setAttribute("message", message);
+        request.getRequestDispatcher("signup.jsp").forward(request, response);
+    }
+}

@@ -1,0 +1,52 @@
+<%@ page import="java.sql.*, java.util.*" %>
+<%@ page import="com.library.model.DBConnection" %>
+<html>
+<head>
+    <title>Search Results</title>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div>
+        <a href="home.jsp">home</a> | 
+        <a href="viewbooks.jsp">view books</a> | 
+        <a href="addbook.jsp">add book</a> |
+        <a href="search.jsp">search books</a> |
+        <a href="delete.jsp">delete book</a> | 
+        <a href="LogoutServlet">logout</a>
+    </div>
+    <hr>
+
+    <h2>Search Results</h2>
+    
+    <!-- Search Form -->
+    <form action="SearchBookServlet" method="get">
+        <input type="text" name="query" placeholder="Search by book name or author">
+        <input type="submit" value="Search">
+    </form>
+    <hr>
+
+    <table border="1">
+        <tr>
+            <th>Book ID</th>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Price</th>
+        </tr>
+        <%
+            ResultSet rs = (ResultSet) request.getAttribute("searchResults");
+            if (rs != null) {
+                while (rs.next()) {
+        %>
+        <tr>
+            <td><%= rs.getInt("id") %></td>
+            <td><%= rs.getString("name") %></td>
+            <td><%= rs.getString("author") %></td>
+            <td><%= rs.getDouble("price") %></td>
+        </tr>
+        <%
+                }
+            }
+        %>
+    </table>
+</body>
+</html>

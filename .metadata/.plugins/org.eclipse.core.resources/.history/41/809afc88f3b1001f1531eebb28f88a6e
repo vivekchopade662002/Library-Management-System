@@ -1,0 +1,73 @@
+package com.library.model;
+
+import java.sql.*;
+import java.util.*;
+import com.library.entity.User;
+
+public class UserManagementDAO {
+    private Connection conn;
+
+    public UserManagementDAO(Connection conn) {
+        this.conn = conn;
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM users WHERE role = 'user'";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setStatus(rs.getString("status"));
+                user.setRegistrationDate(rs.getTimestamp("registration_date"));
+                users.add(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public boolean updateUserStatus(int userId, String status) {
+        try {
+            String sql = "UPDATE users SET status = ? WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, status);
+            ps.setInt(2, userId);
+            int i = ps.executeUpdate();
+            return i > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Map<String, Object>> getUserBorrowingHistory(int userId) {
+        List<Map<String, Object>> history = new ArrayList<>();
+        try {
+            String sql = "SELECT b.name as book_name, ib.issue_date, ib.due_date, ib.return_date " +
+                        "FROM issued_books ib " +
+                        "JOIN books b ON ib.book_id = b.id " +
+                        "WHERE ib.user_id = ? " +
+                        "ORDER BY ib.issue_date DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> record = new HashMap<>();
+                record.put("bookName", rs.getString("book_name"));
+                record.put("issueDate", rs.getTimestamp("issue_date"));
+                record.put("dueDate", rs.getTimestamp("due_date"));
+                record.put("returnDate", rs.getTimestamp("return_date"));
+                history.add(record);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return history;
+    }
+}

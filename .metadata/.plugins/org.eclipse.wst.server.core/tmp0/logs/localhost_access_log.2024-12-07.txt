@@ -1,0 +1,13 @@
+127.0.0.1 - - [07/Dec/2024:15:41:38 +0530] "GET / HTTP/1.1" 404 752
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:39 +0530] "GET /Library_Management_System/index.jsp HTTP/1.1" 200 9230
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:39 +0530] "GET /favicon.ico HTTP/1.1" 404 763
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:40 +0530] "GET /Library_Management_System/login.jsp HTTP/1.1" 200 11220
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:47 +0530] "POST /Library_Management_System/LoginServlet HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:47 +0530] "GET /Library_Management_System/admin-dashboard.jsp HTTP/1.1" 200 15904
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:50 +0530] "GET /Library_Management_System/home.jsp HTTP/1.1" 200 7899
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:51 +0530] "GET /Library_Management_System/purchase-books.jsp HTTP/1.1" 200 55773
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:52 +0530] "POST /Library_Management_System/PurchaseBookServlet HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:52 +0530] "GET /Library_Management_System/purchase-books.jsp?message=Book%20purchased%20successfully! HTTP/1.1" 200 55905
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:53 +0530] "GET /Library_Management_System/home.jsp HTTP/1.1" 200 7899
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:54 +0530] "GET /Library_Management_System/admin-dashboard.jsp HTTP/1.1" 200 16944
+0:0:0:0:0:0:0:1 - - [07/Dec/2024:15:41:55 +0530] "GET /Library_Management_System/purchase-history.jsp HTTP/1.1" 200 6728

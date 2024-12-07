@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    // Check if user is logged in
+    if (session.getAttribute("username") == null) {
+        response.sendRedirect("login.jsp?message=Please login first!");
+        return;
+    }
+%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Home - Library Management System</title>
+</head>
+<body>
+    <h2>Welcome <%= session.getAttribute("username") %></h2>
+    
+    <!-- User Navigation - Limited Options -->
+    <div>
+        <a href="userhome.jsp">home</a> | 
+        <a href="viewbooks.jsp">view books</a> | 
+        <a href="search.jsp">search books</a> |
+        <a href="LogoutServlet">logout</a>
+    </div>
+    <hr>
+    
+    <h3>Available Functions:</h3>
+    <ul>
+        <li><a href="viewbooks.jsp">View All Books</a></li>
+        <li><a href="search.jsp">Search Books</a></li>
+    </ul>
+    
+    <%
+        String message = request.getParameter("message");
+        if (message != null) {
+    %>
+        <p><%= message %></p>
+    <%
+        }
+    %>
+</body>
+</html>

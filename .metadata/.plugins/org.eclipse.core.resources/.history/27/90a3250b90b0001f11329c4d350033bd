@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
+<%
+    String message = "";
+    if (request.getMethod().equals("POST")) {
+        String name = request.getParameter("name");
+        String author = request.getParameter("author");
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/LibraryDB", "root", "password");
+            String query = "INSERT INTO Books (name, author) VALUES (?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, name);
+            stmt.setString(2, author);
+            stmt.executeUpdate();
+
+            message = "Book added successfully!";
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = "Error adding book!";
+        }
+    }
+%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Book</title>
+</head>
+<body>
+    <h1>Add a New Book</h1>
+    <form method="POST">
+        <label>Book Name:</label><br>
+        <input type="text" name="name" required><br>
+        <label>Author:</label><br>
+        <input type="text" name="author" required><br><br>
+        <button type="submit">Add Book</button>
+    </form>
+    <p style="color: green;"><%= message %></p>
+</body>
+</html>

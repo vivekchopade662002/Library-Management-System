@@ -1,0 +1,26 @@
+<%@ page import="jakarta.servlet.http.*,java.sql.*"%>
+<%@ page session="true"%>
+<html>
+<head>
+    <title>library management system</title>
+</head>
+<body>
+    <!-- navigation bar -->
+    <div>
+        <a href="home.jsp">home</a> | 
+        <a href="viewbooks.jsp">view books</a> | 
+        <a href="addbook.jsp">add book</a> | 
+        <a href="login.jsp">login</a> | 
+        <a href="logoutservlet">logout</a>
+        |
+        <form action="SearchBookServlet" method="get" style="display: inline;">
+            <input type="text" name="query" placeholder="Search books...">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+    <hr>
+
+    <!-- welcome message -->
+    <h2>welcome, <%= session.getAttribute("username") %></h2>
+</body>
+</html>

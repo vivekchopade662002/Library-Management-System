@@ -1,0 +1,72 @@
+package com.library.dao;
+
+import java.sql.*;
+import com.library.db.DBConnect;
+
+public class DashBoardDao {
+    private Connection conn;
+
+    public DashBoardDao(Connection conn) {
+        this.conn = conn;
+    }
+
+    public int getTotalBooks() {
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM books";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public int getTotalUsers() {
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM users WHERE role = 'user'";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public int getBorrowedBooks() {
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM issued_books WHERE return_date IS NULL";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public int getOverdueBooks() {
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM issued_books WHERE due_date < CURRENT_DATE AND return_date IS NULL";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+}

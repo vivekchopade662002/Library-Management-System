@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form action="LoginServlet" method="post">
+        Username: <input type="text" name="username"><br>
+        Password: <input type="password" name="password"><br>
+        <input type="submit" value="Login">
+    </form>
+    
+    <p>
+        New User? <a href="signup.jsp">Sign Up Here</a>
+    </p>
+    
+    <%
+        String error = request.getParameter("error");
+        if (error != null) {
+    %>
+    <p style="color:red"><%= error %></p>
+    <%
+        }
+    %>
+    
+    <%
+        String message = request.getParameter("message");
+        if (message != null) {
+    %>
+    <p style="color:green"><%= message %></p>
+    <%
+        }
+    %>
+</body>
+</html>

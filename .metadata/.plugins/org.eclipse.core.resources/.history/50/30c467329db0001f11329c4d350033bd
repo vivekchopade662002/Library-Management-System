@@ -1,0 +1,26 @@
+<%@ page import="jakarta.servlet.http.*,java.sql.*"%>
+<%@ page session="true"%>
+<html>
+<head>
+    <title>library management system</title>
+</head>
+<body>
+    <!-- navigation bar -->
+    <div>
+        <a href="home.jsp">home</a> | 
+        <a href="viewbooks.jsp">view books</a> | 
+        <a href="addbook.jsp">add book</a> | 
+        <a href="login.jsp">login</a> | 
+        <a href="logoutservlet">logout</a>
+    </div>
+    <hr>
+
+    <!-- welcome message -->
+    <h2>welcome, <%= session.getAttribute("username") %></h2>
+
+    <!-- options -->
+    <a href="viewbooks.jsp">view books</a><br>
+    <a href="addbook.jsp">add book</a><br>
+    <a href="logoutservlet">logout</a>
+</body>
+</html>

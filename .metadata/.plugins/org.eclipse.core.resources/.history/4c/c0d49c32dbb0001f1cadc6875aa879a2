@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>Add Book</title>
+</head>
+<body>
+    <h2>Add a New Book</h2>
+    <form action="AddBookServlet" method="post">
+        Book Name: <input type="text" name="name"><br>
+        Author: <input type="text" name="author"><br>
+        Price: <input type="text" name="price"><br>
+        <input type="submit" value="Add Book">
+    </form>
+</body>
+</html>

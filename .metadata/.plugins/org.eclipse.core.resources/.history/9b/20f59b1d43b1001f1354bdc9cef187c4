@@ -1,0 +1,64 @@
+package com.library.servlet;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import com.library.model.DBConnection;
+
+@WebServlet("/SignUpServlet")
+public class SignUpServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        
+        try (Connection conn = DBConnection.getConnection()) {
+            // First check if username already exists
+            String checkSql = "SELECT username FROM users WHERE username = ?";
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+                checkStmt.setString(1, username);
+                ResultSet rs = checkStmt.executeQuery();
+                
+                if (rs.next()) {
+                    // Username already exists
+                    request.setAttribute("message", "Username already exists. Please choose a different username.");
+                    request.getRequestDispatcher("signup.jsp").forward(request, response);
+                    return;
+                }
+            }
+            
+            // If username doesn't exist, proceed with registration
+            String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, username);
+                stmt.setString(2, password);  // Note: In production, password should be hashed
+                stmt.setString(3, email);
+                
+                int rowsAffected = stmt.executeUpdate();
+                
+                if (rowsAffected > 0) {
+                    // Registration successful
+                    request.setAttribute("message", "Registration successful! Please login.");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("message", "Registration failed. Please try again.");
+                    request.getRequestDispatcher("signup.jsp").forward(request, response);
+                }
+            }
+            
+        } catch (Exception e) {
+            request.setAttribute("message", "Error: " + e.getMessage());
+            request.getRequestDispatcher("signup.jsp").forward(request, response);
+        }
+    }
+}
