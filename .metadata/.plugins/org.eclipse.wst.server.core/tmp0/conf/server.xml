@@ -142,7 +142,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="C:\Users\vivek\Desktop\ADVANCED JAVA\Library Management System\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Users\vivek\Desktop\ADVANCED JAVA\Library Management System\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Library_Management_System" path="/Library_Management_System" reloadable="true" source="org.eclipse.jst.jee.server:Library_Management_System"/></Host>
+      <Context docBase="C:\Users\vivek\Desktop\Final PROJECTS\JAVA\Library-Management-System\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Users\vivek\Desktop\Final PROJECTS\JAVA\Library-Management-System\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Library_Management_System" path="/Library_Management_System" reloadable="true" source="org.eclipse.jst.jee.server:Library_Management_System"/></Host>
     </Engine>
   </Service>
 </Server>
